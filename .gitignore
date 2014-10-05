@@ -1,0 +1,14 @@
+**/*~
+*.bak
+.DS_Store
+target
+*.class
+*.log
+.classpath
+.project
+.settings
+.idea
+.metadata
+*.iml
+*.ipr
+Thumbs.db
