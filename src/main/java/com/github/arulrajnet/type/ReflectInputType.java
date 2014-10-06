@@ -76,6 +76,10 @@ public class ReflectInputType<E> implements InputType<E> {
         return (E) obj;
     }
 
+    public String display() {
+        return type.getSimpleName();
+    }
+
     private E convertUsingConstructor(String value) throws PrompterException {
         E obj = null;
         try {

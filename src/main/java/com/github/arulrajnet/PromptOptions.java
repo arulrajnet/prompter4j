@@ -101,4 +101,17 @@ public class PromptOptions {
         this.retryTimes = noOfTimes;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("PromptOptions{");
+        sb.append("inputMessage='").append(inputMessage).append('\'');
+        sb.append(", defaultValue='").append(defaultValue).append('\'');
+        sb.append(", required=").append(required);
+        sb.append(", choices=").append(choices);
+        sb.append(", type=").append(type);
+        sb.append(", retryTimes=").append(retryTimes);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -33,4 +33,8 @@ public class StringInputType implements InputType<String> {
     public String convert(String value) throws PrompterException {
         return value;
     }
+
+    public String display() {
+        return String.class.getSimpleName();
+    }
 }

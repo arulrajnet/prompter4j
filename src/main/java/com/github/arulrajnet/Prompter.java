@@ -44,26 +44,40 @@ public class Prompter {
     }
 
     public static Object prompt(PromptOptions options) {
-        String input = null;
         Object inputObj = null;
-        int retriedTimes = 0;
+        boolean validator = Boolean.TRUE;
         do {
-            input = instance_.readUserInput(options);
-            retriedTimes++;
-        } while ((input==null || input.isEmpty()) && options.required);
+            validator = Boolean.TRUE;
+            String input = instance_.readUserInput(options);
+            try {
+                if (input != null && !input.isEmpty())
+                    inputObj = options.type.convert(input);
+                else if(options.defaultValue != null)
+                    inputObj = options.type.convert(options.defaultValue);
 
-        try {
-            inputObj = options.type.convert(input);
-        } catch (PrompterException e) {
+                if (inputObj != null && options.choices != null) {
+                    if (!options.choices.contains(inputObj)) {
+                        System.out.println("Select from choices");
+                        validator = Boolean.FALSE;
+                    }
+                }
 
-        }
+            } catch (PrompterException e) {
+                System.out.println("Give input as "+options.type.display());
+            }
+        } while (!validator || (inputObj==null && options.required));
 
-        return input!=null ? inputObj : options.defaultValue;
+        return inputObj != null ? inputObj : options.defaultValue;
     }
 
     private String readUserInput(PromptOptions options) {
         PrintWriter writer = new PrintWriter(System.out);
-        writer.println(options.inputMessage);
+        writer.print(options.inputMessage);
+        if (options.defaultValue != null)
+            writer.println(" Default is "+options.defaultValue);
+        else
+            writer.println();
+
         if (options.choices != null && !options.choices.isEmpty()) {
             for (Object e : options.choices)
                 writer.println(e.toString());
@@ -77,7 +91,7 @@ public class Prompter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return line;
+        return line != null ? line.trim() : line;
     }
 
 }
