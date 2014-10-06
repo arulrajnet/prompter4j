@@ -34,13 +34,16 @@ import java.util.List;
 public class PrompterTest {
 
     public static void main(String[] args) {
-        String cc = (String) Prompter.prompt(new PromptOptions("Enter your name : ").required(Boolean.TRUE));
+        String cc = (String) Prompter.prompt(new PromptOptions("Enter your name :").required(Boolean.TRUE));
         System.out.println(cc);
         DAY dd = (DAY) Prompter.prompt(new PromptOptions("Select your day :").
                 choices(DAY.values()).defaultValue(DAY.SUNDAY.toString()).type(DAY.class));
         System.out.println(dd);
-        Integer ee = (Integer)Prompter.prompt(new PromptOptions("Select Any one : ").choices(levelArray).required(true).type(Integer.class));
+        Integer ee = (Integer)Prompter.prompt(new PromptOptions("Select Any one :").choices(levelArray).required(true).type(Integer.class));
         System.out.println(ee);
+
+        int ff = (Integer) Prompter.prompt(new PromptOptions("Enter your age :").required(Boolean.TRUE).type(Integer.class));
+        System.out.println(ff);
     }
 
     enum DAY {
