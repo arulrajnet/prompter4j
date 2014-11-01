@@ -29,21 +29,45 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Test class for prompter4j
+ *
  * @author <a href="mailto:me@arulraj.net">Arul</a>
  */
 public class PrompterTest {
 
     public static void main(String[] args) {
-        String cc = (String) Prompter.prompt(new PromptOptions("Enter your name :").required(Boolean.TRUE));
+        /**
+         * Get the Name as String. Required
+         */
+        String cc = Prompter.prompt(new PromptOptions("Enter your name :").required(Boolean.TRUE));
         System.out.println(cc);
-        DAY dd = (DAY) Prompter.prompt(new PromptOptions("Select your day :").
-                choices(DAY.values()).defaultValue(DAY.SUNDAY.toString()).type(DAY.class));
+
+        /**
+         * Get the Age as Integer. Required
+         */
+        int ff = Prompter.prompt(new PromptOptions("Enter your age :").required(Boolean.TRUE).type(Integer.class));
+        System.out.println(ff);
+
+        /**
+         * Select a Value from List. Required
+         */
+        String sex = Prompter.prompt(new PromptOptions("Select Your Sex :").choices(PrompterTest.sex));
+        System.out.println(sex);
+
+        /**
+         * Select a Value from Enum. Not Required. Default Value set.
+         */
+        DAY dd = Prompter.prompt(new PromptOptions("Select your day :").
+                choices(true, DAY.class).defaultValue(DAY.SUNDAY.toString()).type(DAY.class));
         System.out.println(dd);
-        Integer ee = (Integer)Prompter.prompt(new PromptOptions("Select Any one :").choices(levelArray).required(true).type(Integer.class));
+
+        /**
+         * Select a Value from Integer Array. Required
+         */
+        Integer ee = Prompter.prompt(new PromptOptions("Select Any one :").choices(levelArray).required(true).type(Integer.class));
         System.out.println(ee);
 
-        int ff = (Integer) Prompter.prompt(new PromptOptions("Enter your age :").required(Boolean.TRUE).type(Integer.class));
-        System.out.println(ff);
+
     }
 
     enum DAY {
@@ -57,5 +81,12 @@ public class PrompterTest {
     }
 
     static Integer[] levelArray = {3 ,4, 5};
+
+    static List<String> sex = new ArrayList(){
+        {
+            add("Male");
+            add("Female");
+        }
+    };
 
 }

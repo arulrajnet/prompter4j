@@ -43,22 +43,48 @@ public class Prompter {
 
     }
 
-    public static Object prompt(PromptOptions options) {
-        Object inputObj = null;
-        boolean validator = Boolean.TRUE;
+    /**
+     *
+     * @param options
+     * @param <E>
+     * @return
+     */
+    public static <E> E prompt(PromptOptions options) {
+        E inputObj = null;
+        boolean validator;
         do {
             validator = Boolean.TRUE;
             String input = instance_.readUserInput(options);
             try {
-                if (input != null && !input.isEmpty())
-                    inputObj = options.type.convert(input);
-                else if(options.defaultValue != null)
-                    inputObj = options.type.convert(options.defaultValue);
+
+                if (input != null && !input.isEmpty()) {
+                    if(options.choiceAsNumber) {
+                        try {
+                            inputObj = (E) options.choices.get(Integer.valueOf(input) - 1);
+                        } catch (NumberFormatException e) {
+                            validator = Boolean.FALSE;
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            validator = Boolean.FALSE;
+                        }
+                    } else {
+                        inputObj = (E) options.type.convert(input);
+                    }
+                } else if(options.defaultValue != null) {
+                    inputObj = (E) options.type.convert(options.defaultValue);
+                }
 
                 if (inputObj != null && options.choices != null) {
                     if (!options.choices.contains(inputObj)) {
-                        System.out.println("Select from choices");
                         validator = Boolean.FALSE;
+                    }
+                }
+
+                /**
+                 * Show Help messages
+                 */
+                if(!validator) {
+                    if(options.choices != null) {
+                        System.out.println("Select from choices");
                     }
                 }
 
@@ -67,9 +93,14 @@ public class Prompter {
             }
         } while (!validator || (inputObj==null && options.required));
 
-        return inputObj != null ? inputObj : options.defaultValue;
+        return inputObj != null ? inputObj : (E)options.defaultValue;
     }
 
+    /**
+     *
+     * @param options
+     * @return
+     */
     private String readUserInput(PromptOptions options) {
         PrintWriter writer = new PrintWriter(System.out);
         writer.print(options.inputMessage);
@@ -79,8 +110,12 @@ public class Prompter {
             writer.println();
 
         if (options.choices != null && !options.choices.isEmpty()) {
-            for (Object e : options.choices)
-                writer.println(e.toString());
+            for (int i=0; i < options.choices.size(); i++) {
+                if (options.choiceAsNumber) {
+                    writer.print((i+1)+".");
+                }
+                writer.println(options.choices.get(i));
+            }
         }
         writer.print("> ");
         writer.flush();

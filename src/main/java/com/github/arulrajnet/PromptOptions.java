@@ -28,6 +28,7 @@ import com.github.arulrajnet.type.ReflectInputType;
 import com.github.arulrajnet.type.StringInputType;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -39,24 +40,98 @@ public class PromptOptions {
     protected String defaultValue = null;
     protected Boolean required = Boolean.FALSE;
     protected List choices = null;
+    protected Boolean choiceAsNumber = Boolean.FALSE;
     protected InputType type = new StringInputType();
     protected int retryTimes = 3;
 
-
+    /**
+     *
+     * @param inputMessage
+     */
     public PromptOptions(String inputMessage) {
         this.inputMessage = inputMessage;
     }
 
+    /**
+     *
+     * @param defaultValue
+     * @return
+     */
     public PromptOptions defaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
         return this;
     }
 
+    /**
+     *
+     * @param clazz
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Class clazz) {
+        return choices(clazz.getEnumConstants());
+    }
+
+    /**
+     *
+     * @param choiceAsNumber
+     * @param clazz
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Boolean choiceAsNumber, Class clazz) {
+        return choices(choiceAsNumber, clazz.getEnumConstants());
+    }
+
+    /**
+     *
+     * @param collection
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Collection collection) {
+        return choices(collection.toArray());
+    }
+
+    /**
+     *
+     * @param choiceAsNumber
+     * @param collection
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Boolean choiceAsNumber, Collection collection) {
+        return choices(choiceAsNumber, collection.toArray());
+    }
+
+    /**
+     *
+     * @param values
+     * @param <E>
+     * @return
+     */
     public <E> PromptOptions choices(E... values) {
+        return choices(Boolean.FALSE, values);
+    }
+
+    /**
+     *
+     * @param choiceAsNumber
+     * @param values
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Boolean choiceAsNumber, E... values) {
         this.choices = Arrays.asList(values);
+        this.choiceAsNumber = choiceAsNumber;
         return this;
     }
 
+    /**
+     *
+     * @param required
+     * @return
+     */
     public PromptOptions required(Boolean required) {
         this.required = required;
         return this;
@@ -66,6 +141,12 @@ public class PromptOptions {
         return new ReflectInputType<E>(type);
     }
 
+    /**
+     *
+     * @param type
+     * @param <E>
+     * @return
+     */
     public <E> PromptOptions type(Class<E> type) {
         if (type == null) {
             throw new IllegalArgumentException("type cannot be null");
@@ -109,6 +190,7 @@ public class PromptOptions {
         sb.append(", defaultValue='").append(defaultValue).append('\'');
         sb.append(", required=").append(required);
         sb.append(", choices=").append(choices);
+        sb.append(", choiceAsNumber=").append(choiceAsNumber);
         sb.append(", type=").append(type);
         sb.append(", retryTimes=").append(retryTimes);
         sb.append('}');

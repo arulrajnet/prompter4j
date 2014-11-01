@@ -40,6 +40,12 @@ public class ReflectInputType<E> implements InputType<E> {
         this.type = type;
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     * @throws PrompterException
+     */
     public E convert(String value) throws PrompterException {
         if (type.isEnum()) {
             try {
@@ -76,10 +82,20 @@ public class ReflectInputType<E> implements InputType<E> {
         return (E) obj;
     }
 
+    /**
+     *
+     * @return
+     */
     public String display() {
         return type.getSimpleName();
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     * @throws PrompterException
+     */
     private E convertUsingConstructor(String value) throws PrompterException {
         E obj = null;
         try {
@@ -97,12 +113,22 @@ public class ReflectInputType<E> implements InputType<E> {
         return obj;
     }
 
+    /**
+     *
+     * @param value
+     * @param t
+     * @throws PrompterException
+     */
     private void throwPrompterException(String value, Throwable t)
             throws PrompterException {
         throw new PrompterException(String.format("could not convert '%s' to %s (%s)", value,
                 type.getSimpleName(), t.getMessage()));
     }
 
+    /**
+     *
+     * @param e
+     */
     private void handleInstatiationError(Exception e) {
         throw new IllegalArgumentException("reflect type conversion error", e);
     }
