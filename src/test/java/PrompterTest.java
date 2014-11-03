@@ -21,11 +21,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 import com.github.arulrajnet.PromptOptions;
 import com.github.arulrajnet.Prompter;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class PrompterTest {
          * Select a Value from Enum. Not Required. Default Value set.
          */
         DAY dd = Prompter.prompt(new PromptOptions("Select your day :").
-                choices(true, DAY.class).defaultValue(DAY.SUNDAY.toString()).type(DAY.class));
+                choices(DAY.class, true).defaultValue(DAY.SUNDAY.toString()).type(DAY.class));
         System.out.println(dd);
 
         /**
@@ -67,6 +68,12 @@ public class PrompterTest {
         Integer ee = Prompter.prompt(new PromptOptions("Select Any one :").choices(levelArray).required(true).type(Integer.class));
         System.out.println(ee);
 
+        /**
+         * Choose a File
+         */
+        File file = Prompter.prompt(new PromptOptions("Choose a File :")
+                .choices(new File(System.getProperty("user.home")), true).type(File.class));
+        System.out.println(file);
 
     }
 
@@ -80,9 +87,9 @@ public class PrompterTest {
         SATURDAY
     }
 
-    static Integer[] levelArray = {3 ,4, 5};
+    static Integer[] levelArray = {3, 4, 5};
 
-    static List<String> sex = new ArrayList(){
+    static List<String> sex = new ArrayList() {
         {
             add("Male");
             add("Female");

@@ -44,7 +44,6 @@ public class Prompter {
     }
 
     /**
-     *
      * @param options
      * @param <E>
      * @return
@@ -58,7 +57,7 @@ public class Prompter {
             try {
 
                 if (input != null && !input.isEmpty()) {
-                    if(options.choiceAsNumber) {
+                    if (options.choiceAsNumber) {
                         try {
                             inputObj = (E) options.choices.get(Integer.valueOf(input) - 1);
                         } catch (NumberFormatException e) {
@@ -69,7 +68,7 @@ public class Prompter {
                     } else {
                         inputObj = (E) options.type.convert(input);
                     }
-                } else if(options.defaultValue != null) {
+                } else if (options.defaultValue != null) {
                     inputObj = (E) options.type.convert(options.defaultValue);
                 }
 
@@ -82,21 +81,22 @@ public class Prompter {
                 /**
                  * Show Help messages
                  */
-                if(!validator) {
-                    if(options.choices != null) {
+                if (!validator) {
+                    if (options.choices != null) {
                         System.out.println("Select from choices");
                     }
                 }
 
             } catch (PrompterException e) {
-                System.out.println("Give input as "+options.type.display());
+                System.out.println("Give input as " + options.type.display());
             }
-        } while (!validator || (inputObj==null && options.required));
+        } while (!validator || (inputObj == null && options.required));
 
-        return inputObj != null ? inputObj : (E)options.defaultValue;
+        return inputObj != null ? inputObj : (E) options.defaultValue;
     }
 
     /**
+     * Print user console from PromptOptions
      *
      * @param options
      * @return
@@ -105,14 +105,14 @@ public class Prompter {
         PrintWriter writer = new PrintWriter(System.out);
         writer.print(options.inputMessage);
         if (options.defaultValue != null)
-            writer.println(" Default is "+options.defaultValue);
+            writer.println(" Default is " + options.defaultValue);
         else
             writer.println();
 
         if (options.choices != null && !options.choices.isEmpty()) {
-            for (int i=0; i < options.choices.size(); i++) {
+            for (int i = 0; i < options.choices.size(); i++) {
                 if (options.choiceAsNumber) {
-                    writer.print((i+1)+".");
+                    writer.print((i + 1) + ".");
                 }
                 writer.println(options.choices.get(i));
             }
@@ -122,7 +122,7 @@ public class Prompter {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line = null;
         try {
-            line  = reader.readLine();
+            line = reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }

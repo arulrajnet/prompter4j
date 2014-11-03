@@ -23,10 +23,13 @@
  */
 package com.github.arulrajnet;
 
+import com.github.arulrajnet.type.FileInputType;
 import com.github.arulrajnet.type.InputType;
 import com.github.arulrajnet.type.ReflectInputType;
 import com.github.arulrajnet.type.StringInputType;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +48,6 @@ public class PromptOptions {
     protected int retryTimes = 3;
 
     /**
-     *
      * @param inputMessage
      */
     public PromptOptions(String inputMessage) {
@@ -53,7 +55,6 @@ public class PromptOptions {
     }
 
     /**
-     *
      * @param defaultValue
      * @return
      */
@@ -63,7 +64,6 @@ public class PromptOptions {
     }
 
     /**
-     *
      * @param clazz
      * @param <E>
      * @return
@@ -73,18 +73,16 @@ public class PromptOptions {
     }
 
     /**
-     *
-     * @param choiceAsNumber
      * @param clazz
+     * @param choiceAsNumber
      * @param <E>
      * @return
      */
-    public <E> PromptOptions choices(Boolean choiceAsNumber, Class clazz) {
-        return choices(choiceAsNumber, clazz.getEnumConstants());
+    public <E> PromptOptions choices(Class clazz, Boolean choiceAsNumber) {
+        return choices(clazz.getEnumConstants(), choiceAsNumber);
     }
 
     /**
-     *
      * @param collection
      * @param <E>
      * @return
@@ -94,40 +92,72 @@ public class PromptOptions {
     }
 
     /**
-     *
-     * @param choiceAsNumber
      * @param collection
-     * @param <E>
-     * @return
-     */
-    public <E> PromptOptions choices(Boolean choiceAsNumber, Collection collection) {
-        return choices(choiceAsNumber, collection.toArray());
-    }
-
-    /**
-     *
-     * @param values
-     * @param <E>
-     * @return
-     */
-    public <E> PromptOptions choices(E... values) {
-        return choices(Boolean.FALSE, values);
-    }
-
-    /**
-     *
      * @param choiceAsNumber
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(Collection collection, Boolean choiceAsNumber) {
+        return choices(collection.toArray(), choiceAsNumber);
+    }
+
+    /**
+     * @param folder
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(File folder) {
+        return choices(folder, Boolean.FALSE);
+    }
+
+    /**
+     * @param folder
+     * @param choiceAsNumber
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(File folder, Boolean choiceAsNumber) {
+        if (folder.exists()) {
+            List<File> files = new ArrayList<File>();
+            String absPath = folder.getAbsolutePath();
+            if (folder.isDirectory()) {
+                for (String fileName : folder.list()) {
+                    files.add(new File(absPath + File.separator + fileName));
+                }
+            } else if (folder.isFile()) {
+                files.add(folder);
+            }
+            return choices(files, choiceAsNumber);
+        }
+        return this;
+    }
+
+    /**
      * @param values
      * @param <E>
      * @return
      */
-    public <E> PromptOptions choices(Boolean choiceAsNumber, E... values) {
+    public <E> PromptOptions choices(E[] values) {
+        return choices(values, Boolean.FALSE);
+    }
+
+    /**
+     * The value can be chosen from the array of values.
+     * choiceAsNumber is used to select a array position instead of value.
+     *
+     * @param values
+     * @param choiceAsNumber
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions choices(E[] values, Boolean choiceAsNumber) {
         this.choices = Arrays.asList(values);
         this.choiceAsNumber = choiceAsNumber;
         return this;
     }
 
     /**
+     * The value for the given prompt is mandatory. If you are not given any value it will again ask.
      *
      * @param required
      * @return
@@ -142,6 +172,7 @@ public class PromptOptions {
     }
 
     /**
+     * The given input converted into this type.
      *
      * @param type
      * @param <E>
@@ -172,6 +203,8 @@ public class PromptOptions {
                 // char.class does not have valueOf(String) method
                 throw new IllegalArgumentException("unexpected primitive type");
             }
+        } else if (type.isAssignableFrom(File.class)) {
+            this.type = new FileInputType();
         } else {
             this.type = createReflectArgumentType(type);
         }

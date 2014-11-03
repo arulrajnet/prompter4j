@@ -41,7 +41,6 @@ public class ReflectInputType<E> implements InputType<E> {
     }
 
     /**
-     *
      * @param value
      * @return
      * @throws PrompterException
@@ -83,7 +82,6 @@ public class ReflectInputType<E> implements InputType<E> {
     }
 
     /**
-     *
      * @return
      */
     public String display() {
@@ -91,7 +89,6 @@ public class ReflectInputType<E> implements InputType<E> {
     }
 
     /**
-     *
      * @param value
      * @return
      * @throws PrompterException
@@ -114,7 +111,6 @@ public class ReflectInputType<E> implements InputType<E> {
     }
 
     /**
-     *
      * @param value
      * @param t
      * @throws PrompterException
@@ -126,7 +122,6 @@ public class ReflectInputType<E> implements InputType<E> {
     }
 
     /**
-     *
      * @param e
      */
     private void handleInstatiationError(Exception e) {
