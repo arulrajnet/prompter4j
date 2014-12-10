@@ -23,16 +23,11 @@
  */
 package com.github.arulrajnet;
 
-import com.github.arulrajnet.type.FileInputType;
-import com.github.arulrajnet.type.InputType;
-import com.github.arulrajnet.type.ReflectInputType;
-import com.github.arulrajnet.type.StringInputType;
+import com.github.arulrajnet.type.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author <a href="mailto:me@arulraj.net">Arul</a>
@@ -205,9 +200,36 @@ public class PromptOptions {
             }
         } else if (type.isAssignableFrom(File.class)) {
             this.type = new FileInputType();
+        } else if(type.isAssignableFrom(Date.class)) {
+            this.type = new DateInputType();
         } else {
             this.type = createReflectArgumentType(type);
         }
+        return this;
+    }
+
+    /**
+     * Custom Pattern added with existing patterns.
+     * Given Priority to User given Pattern.
+     *
+     * @param datePattern
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions addDatePattern(String datePattern) {
+        DateInputType.customDateFormats.add(1, new SimpleDateFormat(datePattern));
+        return this;
+    }
+
+    /**
+     * Custom Pattern added and not used the existing patterns.
+     *
+     * @param datePattern
+     * @param <E>
+     * @return
+     */
+    public <E> PromptOptions setDatePattern(String datePattern) {
+        DateInputType.customDateFormats.add(1, new SimpleDateFormat(datePattern));
         return this;
     }
 

@@ -27,6 +27,7 @@ import com.github.arulrajnet.Prompter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +49,12 @@ public class PrompterTest {
          */
         int ff = Prompter.prompt(new PromptOptions("Enter your age :").required(Boolean.TRUE).type(Integer.class));
         System.out.println(ff);
+
+        /**
+         * Get Date of Birth. Not Required
+         */
+        Date date = Prompter.prompt(new PromptOptions("Enter your Date of Birth : ").type(Date.class));
+        System.out.println(date);
 
         /**
          * Select a Value from List. Required
