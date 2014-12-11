@@ -5,7 +5,7 @@ Prompter4J is a library to get the user raw input in an interactive manner.
 
 ### Maven
 
-*Coming soon*
+Add this dependency in your pom.xml and start using.
 
 ```xml
 <dependency>
@@ -15,6 +15,9 @@ Prompter4J is a library to get the user raw input in an interactive manner.
 </dependency>
 ```
 
+### JAR file
+
+http://central.maven.org/maven2/com/github/arulrajnet/prompter4j/1.0/prompter4j-1.0.jar
 
 ### Features
 

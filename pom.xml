@@ -9,6 +9,14 @@
     <version>1.0</version>
     <description>Prompter4J is a library to get the user raw input in an interactive manner.</description>
     <url>http://promter4j.arulraj.net</url>
+    <name>prompter4j</name>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://raw.github.com/arulrajnet/prompter4j/master/LICENSE.txt</url>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
@@ -39,6 +47,7 @@
     </build>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.5</java.version>
         <testng.version>6.8.8</testng.version>
     </properties>
